@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using Server.Classes;
 
 namespace Server.Classes
 {
@@ -91,7 +92,7 @@ namespace Server.Classes
             {
                 try
                 {
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[Settings.Connection.BufferSize];
                     NetworkStream stream = client.GetStream();
 
                     while (!cts.Token.IsCancellationRequested)
@@ -106,7 +107,7 @@ namespace Server.Classes
                         }
 
                         byte[] receivedData = buffer.Take(bytesRead).ToArray();
-                        onReceived?.Invoke(this, new ReceivedArgs(receivedData, client));
+                        onReceived?.Invoke(this, new ReceivedArgs(Encryption.Decrypt(receivedData), client));
                     }
                 }
                 catch (Exception)
@@ -117,9 +118,12 @@ namespace Server.Classes
             });
         }
 
-        public void sendToClient(TcpClient client)
+        public void sendToClient(TcpClient client, byte[] data)
         {
-
+            var stream = client.GetStream();
+            var _data = Encryption.Encrypt(data);
+            stream.Write(_data, 0, _data.Length);
+            stream.Dispose();
         }
 
         public void Dispose()

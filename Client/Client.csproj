@@ -41,6 +41,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Connection.cs" />
     <Compile Include="Classes\Encryption.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Settings.cs" />

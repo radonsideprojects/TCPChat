@@ -8,9 +8,10 @@ namespace Server
 {
     internal class Program
     {
+        private static Connection connection;
         public static void Initiate()
         {
-            Connection connection = new Connection();
+            connection = new Connection();
             connection.onConnected += onClientConnection;
             connection.onReceived += onDataReceived;
             connection.Listen();
@@ -24,6 +25,7 @@ namespace Server
         private static void onClientConnection(object sender, ConnectedArgs e)
         {
             Logging.Success("Client connected: " + e.client.Client.RemoteEndPoint);
+            connection.sendToClient(e.client, Encoding.UTF8.GetBytes("Test message! :P"));
         }
 
         [STAThread]

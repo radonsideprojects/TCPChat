@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Classes
 {
@@ -13,7 +13,7 @@ namespace Client.Classes
         // Took the code from code project and modified it to my liking.
         // https://www.codeproject.com/Articles/769741/Csharp-AES-256-bits-Encryption-Library-with-Salt
 
-        public byte[] Encrypt(byte[] bytesToBeEncrypted)
+        public static byte[] Encrypt(byte[] bytesToBeEncrypted)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(Settings.Encryption.Key);
             byte[] saltBytes = Settings.Encryption.Salt;
@@ -45,7 +45,7 @@ namespace Client.Classes
             return encryptedBytes;
         }
 
-        public byte[] Decrypt(byte[] bytesToBeDecrypted)
+        public static byte[] Decrypt(byte[] bytesToBeDecrypted)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(Settings.Encryption.Key);
             byte[] saltBytes = Settings.Encryption.Salt;
