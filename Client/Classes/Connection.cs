@@ -22,7 +22,7 @@ namespace Client.Classes
 
         public void Receive()
         {
-            Task.Run(() =>
+            Task.Run(async() =>
             {
                 client.Connect(Settings.Connection.Ip, Settings.Connection.Port);
 
@@ -31,21 +31,22 @@ namespace Client.Classes
 
                 while (!ct.IsCancellationRequested)
                 {
-                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                    Console.WriteLine(Encoding.UTF8.GetString(Encryption.Decrypt(buffer.Take(bytesRead).ToArray())));
+                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                    Console.WriteLine("Received from server: " + Encoding.UTF8.GetString(Encryption.Decrypt(buffer.Take(bytesRead).ToArray())));
                 }
             });
         }
 
-        public void Dispose()
+        public void sendToServer(byte[] data)
         {
-            client.Close();
-            client.Dispose();
+            byte[] encryptedData = Encryption.Encrypt(data);
+            var stream = client.GetStream();
+            stream.Write(encryptedData, 0, encryptedData.Length);
         }
 
         public void Break()
         {
-            Dispose();
+            client.Close();
             cts.Cancel();
         }
     }

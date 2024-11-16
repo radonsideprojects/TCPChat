@@ -17,6 +17,7 @@ namespace Client
 
             connection = new Connection();
             connection.Receive();
+            connection.sendToServer(Encoding.UTF8.GetBytes("Test message :P"));
 
             Thread.Sleep(-1);
         }
