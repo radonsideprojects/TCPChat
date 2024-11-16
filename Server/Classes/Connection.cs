@@ -128,6 +128,25 @@ namespace Server.Classes
             }
         }
 
+        public void broadcast(byte[] data)
+        {
+            Task.Run(async () => {
+                byte[] encryptedData = Encryption.Encrypt(data);
+                foreach (var client in clients)
+                {
+                    try
+                    {
+                        var stream = client.GetStream();
+                        await stream.WriteAsync(encryptedData, 0, encryptedData.Length);
+                    }
+                    catch
+                    {
+                        Logging.Error("Failed to broadcast to client: " + client.Client.RemoteEndPoint);
+                    }
+                }
+            });
+        }
+
         public void Dispose()
         {
             listener.Stop();
