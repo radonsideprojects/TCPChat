@@ -8,31 +8,16 @@ namespace Server
 {
     internal class Program
     {
-        private static Connection connection;
-        public static void Initiate()
-        {
-            connection = new Connection();
-            connection.onConnected += onClientConnection;
-            connection.onReceived += onDataReceived;
-            connection.Listen();
-        }
-
-        private static void onDataReceived(object sender, ReceivedArgs e)
-        {
-            Logging.Info("Received data from " + e.sender.Client.RemoteEndPoint + ": " + Encoding.UTF8.GetString(e.data));
-        }
-
-        private static void onClientConnection(object sender, ConnectedArgs e)
-        {
-            Logging.Success("Client connected: " + e.client.Client.RemoteEndPoint);
-            connection.sendToClient(e.client, Encoding.UTF8.GetBytes("Test message! :P"));
-        }
 
         [STAThread]
         public static void Main()
         {
+            Console.WriteLine(Properties.Resources.logo + Environment.NewLine);
             
-            Initiate();
+            Handling handler = new Handling();
+
+            handler.Initiate();
+
             Thread.Sleep(-1);
         }   
     }
