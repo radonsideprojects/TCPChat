@@ -45,8 +45,8 @@ namespace Client.Classes
 
         public void Break()
         {
-            cts.Cancel();
             Dispose();
+            cts.Cancel();
         }
     }
 }

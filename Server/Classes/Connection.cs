@@ -123,7 +123,6 @@ namespace Server.Classes
             var stream = client.GetStream();
             var _data = Encryption.Encrypt(data);
             stream.Write(_data, 0, _data.Length);
-            stream.Dispose();
         }
 
         public void Dispose()
