@@ -74,10 +74,6 @@ namespace Server.Classes
 
                         receiveFromClient(client);
                     }
-                    catch (OperationCanceledException)
-                    {
-                        break;
-                    }
                     catch (Exception ex)
                     {
                         Logging.Error("Failed to accept a client\n" + ex.ToString());
@@ -120,9 +116,16 @@ namespace Server.Classes
 
         public void sendToClient(TcpClient client, byte[] data)
         {
-            var stream = client.GetStream();
-            var _data = Encryption.Encrypt(data);
-            stream.Write(_data, 0, _data.Length);
+            try
+            {
+                var stream = client.GetStream();
+                var _data = Encryption.Encrypt(data);
+                stream.Write(_data, 0, _data.Length);
+            }
+            catch
+            {
+                Logging.Error("Failed to send data to the client!");
+            }
         }
 
         public void Dispose()

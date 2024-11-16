@@ -1,10 +1,9 @@
-﻿using System.Windows.Forms;
-using System.Net.Sockets;
+﻿using System;
 using System.Text;
 using System.Threading;
-using System;
+using System.Windows.Forms;
+
 using Client.Classes;
-using System.Runtime.CompilerServices;
 
 namespace Client
 {
@@ -16,10 +15,16 @@ namespace Client
             Application.ApplicationExit += clientClosing;
 
             connection = new Connection();
+            connection.onReceived += onReceivedFromServer;
             connection.Receive();
             connection.sendToServer(Encoding.UTF8.GetBytes("Test message :P"));
 
             Thread.Sleep(-1);
+        }
+
+        private static void onReceivedFromServer(object sender, ReceivedArgs e)
+        {
+            Console.WriteLine("Received from server: " + Encoding.UTF8.GetString(e.data));
         }
 
         private static void clientClosing(object sender, System.EventArgs e)

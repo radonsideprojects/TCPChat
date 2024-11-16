@@ -7,12 +7,22 @@ using System.Linq;
 
 namespace Client.Classes
 {
+    public class ReceivedArgs : EventArgs
+    {
+        public byte[] data { get; set; }
+
+        public ReceivedArgs(byte[] _data)
+        {
+            data = _data;
+        }
+    }
     public class Connection
     {
         private TcpClient client;
         private CancellationTokenSource cts;
         private CancellationToken ct;
 
+        public event EventHandler<ReceivedArgs> onReceived;
         public Connection()
         {
             client = new TcpClient();
@@ -32,7 +42,8 @@ namespace Client.Classes
                 while (!ct.IsCancellationRequested)
                 {
                     int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                    Console.WriteLine("Received from server: " + Encoding.UTF8.GetString(Encryption.Decrypt(buffer.Take(bytesRead).ToArray())));
+                    if (bytesRead > 0)
+                        onReceived?.Invoke(this, new ReceivedArgs(Encryption.Decrypt(buffer.Take(bytesRead).ToArray())));
                 }
             });
         }
