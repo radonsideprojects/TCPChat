@@ -37,7 +37,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -56,7 +55,8 @@
   <ItemGroup>
     <Compile Include="Classes\Connection.cs" />
     <Compile Include="Classes\Encryption.cs" />
-    <Compile Include="Classes\Message.cs" />
+    <Compile Include="Classes\Serializable\Message.cs" />
+    <Compile Include="Classes\Serialization.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">
