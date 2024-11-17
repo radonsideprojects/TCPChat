@@ -17,11 +17,24 @@ namespace Server.Classes
         private void onClientDisconnected(object sender, ConnectedArgs e)
         {
             Logging.Warning("Client disconnected: " + e.client.Client.RemoteEndPoint);
+            Message message = new Message();
+
+            message.Content = "A client disconnected.";
+            message.Username = "system";
+
+            connection.broadcast(Serialization.XmlSerializeToByte<Message>(message));
         }
 
         private void onClientConnected(object sender, ConnectedArgs e)
         {
             Logging.Success("Client connected: " + e.client.Client.RemoteEndPoint);
+
+            Message message = new Message();
+
+            message.Content = "New client connected!";
+            message.Username = "system";
+
+            connection.broadcast(Serialization.XmlSerializeToByte<Message>(message));
         }
 
         private void onDataReceived(object sender, ReceivedArgs e)

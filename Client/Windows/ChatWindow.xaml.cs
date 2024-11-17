@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using Client.Classes;
+using System;
 
 namespace Client.Windows
 {
@@ -10,20 +11,35 @@ namespace Client.Windows
     {
         private Connection connection;
         private string Username;
+        private int count = 0;
         public ChatWindow(string _username)
         {
             InitializeComponent();
             Username = _username;
             connection = new Connection();
             connection.onReceived += onMessageReceived;
+            chatBox.AppendText("Welcome to the chat!\n");
             connection.Receive();
         }
 
         private void onMessageReceived(object sender, ReceivedArgs e)
         {
             Dispatcher.Invoke(() => {
+                DateTime timestamp = DateTime.Now;
                 Message message = Serialization.XmlDeserializeFromBytes<Message>(e.data);
-                chatBox.AppendText(message.Username + ": " + message.Content + "\n");
+
+                if (message.Username == "system")
+                {
+                    if (count > 0)
+                    {
+                        chatBox.AppendText("\n\n" + message.Content + "\n\n");
+                    }
+                    count++;
+                }
+                else
+                {
+                    chatBox.AppendText($"{timestamp.Hour}:{timestamp.Minute} " + message.Username + ": " + message.Content + "\n");
+                }
             });
         }
 
