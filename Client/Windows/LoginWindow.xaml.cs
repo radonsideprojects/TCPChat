@@ -27,17 +27,25 @@ namespace Client.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ChatWindow chatWindow = new ChatWindow(userBox.Text);
-            chatWindow.Show();
-            this.Close();
+            if (userBox.Text == "")
+            {
+                MessageBox.Show("Your username cannot be blank!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                ChatWindow chatWindow = new ChatWindow(userBox.Text);
+                chatWindow.Show();
+                this.Close();
+            }
+            
         }
 
         private void userBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             userBox.Text = userBox.Text.Replace(" ", "");
+            userBox.ScrollToEnd();
             if (userBox.Text == "system")
                 userBox.Text = "";
-            userBox.ScrollToEnd();
         }
     }
 }
