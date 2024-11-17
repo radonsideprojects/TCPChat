@@ -18,7 +18,7 @@ namespace Client.Windows
             Username = _username;
             connection = new Connection();
             connection.onReceived += onMessageReceived;
-            chatBox.AppendText("Welcome to the chat!\n");
+            chatBox.AppendText("Welcome to the chat!\n\n");
             connection.Receive();
         }
 
@@ -32,13 +32,13 @@ namespace Client.Windows
                 {
                     if (count > 0)
                     {
-                        chatBox.AppendText("\n\n" + message.Content + "\n\n");
+                        chatBox.AppendText("\n" + message.Content + "\n\n");
                     }
                     count++;
                 }
                 else
                 {
-                    chatBox.AppendText($"{timestamp.Hour}:{timestamp.Minute} " + message.Username + ": " + message.Content + "\n");
+                    chatBox.AppendText($"{timestamp.Hour}:{timestamp.Minute} " + $"[ {message.Username} ]"  + ": " + message.Content + "\n");
                 }
             });
         }
