@@ -9,7 +9,7 @@ namespace Server.Settings
     public class Connection
     {
         public static int Port = 1488;
-        public static int BufferSize = 65536;
+        public static int BufferSize = 1024;
     }
     public class Encryption
     {

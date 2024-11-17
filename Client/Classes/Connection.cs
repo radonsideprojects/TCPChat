@@ -48,22 +48,6 @@ namespace Client.Classes
             });
         }
 
-        public static bool isServerUp()
-        {
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    client.Connect(Settings.Connection.Ip, Settings.Connection.Port);
-                    return true;
-                }
-            }
-            catch (SocketException)
-            {
-                return false;
-            }
-        }
-
         public void sendToServer(byte[] data)
         {
             byte[] encryptedData = Encryption.Encrypt(data);
