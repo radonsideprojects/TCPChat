@@ -35,6 +35,8 @@ namespace Client.Windows
         private void userBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             userBox.Text = userBox.Text.Replace(" ", "");
+            if (userBox.Text == "system")
+                userBox.Text = "";
             userBox.ScrollToEnd();
         }
     }
