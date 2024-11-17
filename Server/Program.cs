@@ -19,13 +19,13 @@ namespace Server
 
         private static void onDataReceived(object sender, ReceivedArgs e)
         {
-            Logging.Info("Received data from " + e.sender.Client.RemoteEndPoint + ": " + Encoding.UTF8.GetString(e.data));
+            Logging.Info("Received data from " + e.sender.Client.RemoteEndPoint);
+            connection.broadcast(e.data);
         }
 
         private static void onClientConnection(object sender, ConnectedArgs e)
         {
             Logging.Success("Client connected: " + e.client.Client.RemoteEndPoint);
-            connection.sendToClient(e.client, Encoding.UTF8.GetBytes("Test message! :P"));
         }
 
         [STAThread]
