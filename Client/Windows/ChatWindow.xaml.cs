@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using Client.Classes;
-using Newtonsoft.Json;
 
 namespace Client.Windows
 {
@@ -23,7 +22,7 @@ namespace Client.Windows
         private void onMessageReceived(object sender, ReceivedArgs e)
         {
             Dispatcher.Invoke(() => {
-                Message message = JsonConvert.DeserializeObject<Message>(Encoding.UTF8.GetString(e.data));
+                Message message = Serialization.XmlDeserializeFromBytes<Message>(e.data);
                 chatBox.AppendText(message.Username + ": " + message.Content + "\n");
             });
         }
@@ -41,7 +40,7 @@ namespace Client.Windows
                 message = new Message();
                 message.Content = inputBox.Text;
                 message.Username = Username;
-                connection.sendToServer(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
+                connection.sendToServer(Serialization.XmlSerializeToByte<Message>(message));
                 inputBox.Clear();
             }
         }

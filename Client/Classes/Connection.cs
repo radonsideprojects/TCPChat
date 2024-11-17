@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
 using System.Linq;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace Client.Classes
 {
@@ -32,7 +34,7 @@ namespace Client.Classes
 
         public void Receive()
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 client.Connect(Settings.Connection.Ip, Settings.Connection.Port);
 

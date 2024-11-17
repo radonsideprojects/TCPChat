@@ -20,7 +20,7 @@
         <TextBox x:Name="inputBox"  
                  Grid.Row="1"
                  Margin="5" 
-                 Text="Write here" 
+                 MaxLength="4000"
                  TextAlignment="Left" 
                  KeyDown="TextBox_KeyDown" />
     </Grid>

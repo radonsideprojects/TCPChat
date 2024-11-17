@@ -31,5 +31,11 @@ namespace Client.Windows
             chatWindow.Show();
             this.Close();
         }
+
+        private void userBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            userBox.Text = userBox.Text.Replace(" ", "");
+            userBox.ScrollToEnd();
+        }
     }
 }

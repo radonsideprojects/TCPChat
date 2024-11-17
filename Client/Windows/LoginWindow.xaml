@@ -7,7 +7,7 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Content="Chat" HorizontalAlignment="Center" FontSize="24" Margin="0,0,0,20"/>
 
-            <TextBox x:Name="userBox" TextAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="0,0,0,20"/>
+            <TextBox x:Name="userBox" TextChanged="userBox_TextChanged" MaxLength="15" TextAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="0,0,0,20"/>
 
             <Button Content="Connect" Click="Button_Click" HorizontalAlignment="Center" Width="100"/>
         </StackPanel>

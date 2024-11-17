@@ -50,6 +50,7 @@ namespace Server.Classes
 
         public event EventHandler<ReceivedArgs> onReceived;
         public event EventHandler<ConnectedArgs> onConnected;
+        public event EventHandler<ConnectedArgs> onDisconnected;
 
         public List<TcpClient> getClients()
         {
@@ -98,7 +99,7 @@ namespace Server.Classes
                         if (bytesRead == 0)
                         {
                             lock (clients) clients.Remove(client);
-                            Logging.Warning("Client disconnected: " + client.Client.RemoteEndPoint);
+                            onDisconnected?.Invoke(this, new ConnectedArgs(client));
                             break;
                         }
 
@@ -109,7 +110,7 @@ namespace Server.Classes
                 catch (Exception)
                 {
                     lock (clients) clients.Remove(client);
-                    Logging.Warning("Client disconnected: " + client.Client.RemoteEndPoint);
+                    onDisconnected?.Invoke(this, new ConnectedArgs(client));
                 }
             });
         }
