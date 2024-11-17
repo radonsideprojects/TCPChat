@@ -27,12 +27,13 @@ namespace Client.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (userBox.Text == "")
+            if (userBox.Text == "" && ipBox.Text == "")
             {
-                MessageBox.Show("Your username cannot be blank!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Your username and the server IP cannot be blank!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
+                Settings.Connection.Ip = ipBox.Text;
                 ChatWindow chatWindow = new ChatWindow(userBox.Text);
                 chatWindow.Show();
                 this.Close();
