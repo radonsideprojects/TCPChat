@@ -9,7 +9,7 @@ namespace Client.Settings
     public class Connection
     {
         public static int Port = 1488;
-        public static string Ip = "127.0.0.1";
+        public static string Ip { get; set; }
         public static int BufferSize = 65536;
     }
     public class Encryption
