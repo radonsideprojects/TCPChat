@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Server.Classes.Serializable;
 
 namespace Server.Classes
 {
@@ -28,7 +29,7 @@ namespace Server.Classes
                 users.Remove(userToRemove);
                 Logging.Success($"Removed user {userToRemove.Username ?? "Unknown"} from the list.");
 
-                Serializable.Message serverMessage = new Serializable.Message
+                Message serverMessage = new Message
                 {
                     Type = "userLeft",
                     Username = userToRemove.Username
@@ -45,12 +46,12 @@ namespace Server.Classes
 
         private void onDataReceived(object sender, ReceivedArgs e)
         {
-            Serializable.Message message = new Serializable.Message();
-            Serializable.Message serverMessage = new Serializable.Message();
+            Message message = new Message();
+            Message serverMessage = new Message();
             User user = new User();
             try
             {
-                message = Serialization.XmlDeserializeFromBytes<Serializable.Message>(e.data);
+                message = Serialization.XmlDeserializeFromBytes<Message>(e.data);
                 switch (message.Type)
                 {
                     case "chatMessage":
