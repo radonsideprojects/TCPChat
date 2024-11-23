@@ -1,6 +1,7 @@
 ﻿<Window x:Class="Client.Windows.ChatWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         Title="Chat" Height="500" Width="700" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -12,7 +13,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="chatBox" 
+        <emoji:TextBox x:Name="chatBox" 
                  Grid.Row="0" 
                  Grid.Column="0"
                  TextWrapping="Wrap" 

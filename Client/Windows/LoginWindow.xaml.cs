@@ -17,7 +17,7 @@ namespace Client.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (userBox.Text == "" && ipBox.Text == "")
+            if (string.IsNullOrWhiteSpace(userBox.Text) || string.IsNullOrWhiteSpace(ipBox.Text))
             {
                 MessageBox.Show("Your username and the server IP cannot be blank!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
