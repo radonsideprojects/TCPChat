@@ -23,13 +23,15 @@ namespace Client.Classes
         private TcpClient client;
         private CancellationTokenSource cts;
         private CancellationToken ct;
+        private string Username;
 
         public event EventHandler<ReceivedArgs> onReceived;
-        public Connection()
+        public Connection(string _username)
         {
             client = new TcpClient();
             cts = new CancellationTokenSource();
             ct = cts.Token;
+            Username = _username;
         }
 
         public void Receive()
@@ -40,6 +42,12 @@ namespace Client.Classes
 
                 byte[] buffer = new byte[Settings.Connection.BufferSize];
                 NetworkStream stream = client.GetStream();
+
+                Message message = new Message();
+                message.Username = Username;
+                message.Type = "userJoined";
+
+                sendToServer(Serialization.XmlSerializeToByte(message));
 
                 while (!ct.IsCancellationRequested)
                 {

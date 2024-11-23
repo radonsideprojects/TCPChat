@@ -24,17 +24,11 @@ namespace Client.Windows
 
             this.Title = $"TCPChat ({_username}) | Server: {_ip}";
 
-            connection = new Connection();
+            connection = new Connection(_username);
             connection.onReceived += onMessageReceived;
 
             chatBox.AppendText("Welcome to the chat!" + "\n");
             connection.Receive();
-
-            Message message = new Message();
-            message.Username = _username;
-            message.Type = "userJoined";
-
-            connection.sendToServer(Serialization.XmlSerializeToByte(message));
         }
 
         private void onMessageReceived(object sender, ReceivedArgs e)
