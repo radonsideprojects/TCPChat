@@ -11,15 +11,26 @@ namespace Client.Windows
     {
         private Connection connection;
         private string Username;
-        private int count = 0;
-        public ChatWindow(string _username)
+        private string IP;
+        public ChatWindow(string _username, string _ip)
         {
             InitializeComponent();
             Username = _username;
+            IP = _ip;
+
+            this.Title = $"TCPChat ({_username}) | Server: {_ip}";
+
             connection = new Connection();
             connection.onReceived += onMessageReceived;
-            chatBox.AppendText("Welcome to the chat!\n\n");
+
+            chatBox.AppendText("Welcome to the chat!" + "\n");
             connection.Receive();
+
+            Message message = new Message();
+            message.Username = _username;
+            message.Type = "userJoined";
+
+            connection.sendToServer(Serialization.XmlSerializeToByte(message));
         }
 
         private void onMessageReceived(object sender, ReceivedArgs e)
@@ -28,23 +39,15 @@ namespace Client.Windows
                 DateTime timestamp = DateTime.Now;
                 Message message = Serialization.XmlDeserializeFromBytes<Message>(e.data);
 
-                if (message.Type == "chatMessage")
+                switch (message.Type)
                 {
-                    if (message.Username == "system")
-                    {
-                        if (count > 0)
-                        {
-                            chatBox.AppendText(Encoding.UTF8.GetString(message.Data) + "\n");
-                        }
-                        count++;
-                    }
-                    else
-                    {
+                    case "chatMessage":
                         chatBox.AppendText($"{timestamp.Hour}:{timestamp.Minute} " + $"[ {message.Username} ]" + ": " + Encoding.UTF8.GetString(message.Data) + "\n");
-                    }
+                        break;
+                    case "userJoined":
+                        chatBox.AppendText("A user has joined: " + message.Username + "\n");
+                        break;
                 }
-
-                
             });
         }
 

@@ -1,4 +1,5 @@
 ﻿using Server.Classes.Serializable;
+using System.Text;
 
 namespace Server.Classes
 {
@@ -27,13 +28,21 @@ namespace Server.Classes
         private void onDataReceived(object sender, ReceivedArgs e)
         {
             Message message = new Message();
+            Message serverMessage = new Message();
             try
             {
                 message = Serialization.XmlDeserializeFromBytes<Message>(e.data);
                 switch (message.Type)
                 {
                     case "chatMessage":
+                        Logging.Info("Received a chat message from: " + e.sender.Client.RemoteEndPoint + $" {message.Username}");
                         connection.broadcast(e.data);
+                        break;
+                    case "userJoined":
+                        serverMessage.Type = "userJoined";
+                        serverMessage.Username = message.Username;
+
+                        connection.broadcast(Serialization.XmlSerializeToByte(serverMessage));
                         break;
                 }
             }
