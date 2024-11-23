@@ -4,6 +4,9 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using Client.Classes;
 using System;
+using System.Collections.Generic;
+using System.Windows.Markup;
+using System.Threading.Tasks;
 
 namespace Client.Windows
 {
@@ -48,10 +51,11 @@ namespace Client.Windows
                     case "userJoined":
                         chatBox.AppendText("A user has joined: " + message.Username + "\n");
                         break;
-                    case "error":
-                        connection.Break();
-                        MessageBox.Show(Encoding.UTF8.GetString(message.Data), "Server issued an error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                        this.Close();
+                    case "userLeft":
+                        chatBox.AppendText("A user has left: " + message.Username + "\n");
+                        break;
+                    case "userList":
+                        UpdateUserList(message.Data);
                         break;
                 }
             });
@@ -82,6 +86,17 @@ namespace Client.Windows
         private void chatBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             chatBox.ScrollToEnd();
+        }
+
+        private void UpdateUserList(byte[] data)
+        {
+            Dispatcher.Invoke(() => {
+                userList.Items.Clear();
+                List<User> users = Serialization.DeserializeListFromBytes<User>(data);
+                foreach (User user in users) {
+                    userList.Items.Add(user.Username);
+                }
+            });
         }
     }
 }

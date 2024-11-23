@@ -6,12 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Server.Classes
+namespace Client.Classes
 {
     public class User
     {
-        [XmlIgnore]
-        public TcpClient Client { get; set; }
         public string Username { get; set; }
     }
 }

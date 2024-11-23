@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -45,6 +46,17 @@ namespace Client.Classes
                     return (T)serializer.Deserialize(xmlReader);
                 }
             }
+        }
+
+        // Me when I'm lazy
+        public static byte[] SerializeListToBytes<T>(List<T> list)
+        {
+            return XmlSerializeToByte(list);
+        }
+
+        public static List<T> DeserializeListFromBytes<T>(byte[] bytes)
+        {
+            return XmlDeserializeFromBytes<List<T>>(bytes);
         }
     }
 }
