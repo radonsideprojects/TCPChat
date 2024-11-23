@@ -1,13 +1,15 @@
-﻿using Server.Classes.Serializable;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Server.Classes
 {
     internal class Handler
     {
         private Connection connection;
+
+        private List<User> users;
         public void Initialize()
         {
+            users = new List<User>();
             connection = new Connection();
             connection.onConnected += onClientConnected;
             connection.onDisconnected += onClientDisconnected;
@@ -18,6 +20,22 @@ namespace Server.Classes
         private void onClientDisconnected(object sender, ConnectedArgs e)
         {
             Logging.Warning("Client disconnected: " + e.client.Client.RemoteEndPoint);
+
+            User userToRemove = users.Find(u => u.Client == e.client);
+
+            if (userToRemove != null)
+            {
+                users.Remove(userToRemove);
+                Logging.Success($"Removed user {userToRemove.Username ?? "Unknown"} from the list.");
+
+                Serializable.Message serverMessage = new Serializable.Message
+                {
+                    Type = "userLeft",
+                    Username = userToRemove.Username
+                };
+
+                connection.broadcast(Serialization.XmlSerializeToByte(serverMessage));
+            }
         }
 
         private void onClientConnected(object sender, ConnectedArgs e)
@@ -27,18 +45,26 @@ namespace Server.Classes
 
         private void onDataReceived(object sender, ReceivedArgs e)
         {
-            Message message = new Message();
-            Message serverMessage = new Message();
+            Serializable.Message message = new Serializable.Message();
+            Serializable.Message serverMessage = new Serializable.Message();
+            User user = new User();
             try
             {
-                message = Serialization.XmlDeserializeFromBytes<Message>(e.data);
+                message = Serialization.XmlDeserializeFromBytes<Serializable.Message>(e.data);
                 switch (message.Type)
                 {
                     case "chatMessage":
-                        Logging.Info("Received a chat message from: " + e.sender.Client.RemoteEndPoint + $" {message.Username}");
+                        Logging.Info("Received a chat message from: " + e.sender.Client.RemoteEndPoint + $"({message.Username})");
                         connection.broadcast(e.data);
                         break;
                     case "userJoined":
+                        user.Client = e.sender;
+                        user.Username = message.Username;
+
+                        users.Add(user);
+
+                        Logging.Success("Added client " + $"{e.sender.Client.RemoteEndPoint} ({message.Username}) to the user list.");
+
                         serverMessage.Type = "userJoined";
                         serverMessage.Username = message.Username;
 
@@ -51,5 +77,6 @@ namespace Server.Classes
                 Logging.Error("Improper data sent by client: " + e.sender.Client.RemoteEndPoint);
             }
         }
+
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Text;
 using Server.Classes;
 using System.Threading;
-using System.Windows;
 
 namespace Server
 {
@@ -12,10 +10,10 @@ namespace Server
         public static void Main()
         {
             Handler handler = new Handler();
-
             handler.Initialize();
 
             Thread.Sleep(-1);
-        }   
+        }
+
     }
 }

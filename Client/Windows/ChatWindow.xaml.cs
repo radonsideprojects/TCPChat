@@ -15,6 +15,7 @@ namespace Client.Windows
         public ChatWindow(string _username, string _ip)
         {
             InitializeComponent();
+
             Username = _username;
             IP = _ip;
 
@@ -47,6 +48,11 @@ namespace Client.Windows
                     case "userJoined":
                         chatBox.AppendText("A user has joined: " + message.Username + "\n");
                         break;
+                    case "error":
+                        connection.Break();
+                        MessageBox.Show(Encoding.UTF8.GetString(message.Data), "Server issued an error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        this.Close();
+                        break;
                 }
             });
         }
@@ -61,12 +67,15 @@ namespace Client.Windows
             Message message;
             if (e.Key == Key.Enter)
             {
-                message = new Message();
-                message.Data = Encoding.UTF8.GetBytes(inputBox.Text);
-                message.Type = "chatMessage";
-                message.Username = Username;
-                connection.sendToServer(Serialization.XmlSerializeToByte<Message>(message));
-                inputBox.Clear();
+                if (!string.IsNullOrWhiteSpace(inputBox.Text) && !(string.IsNullOrEmpty(inputBox.Text)))
+                {
+                    message = new Message();
+                    message.Data = Encoding.UTF8.GetBytes(inputBox.Text);
+                    message.Type = "chatMessage";
+                    message.Username = Username;
+                    connection.sendToServer(Serialization.XmlSerializeToByte<Message>(message));
+                    inputBox.Clear();
+                }
             }
         }
 

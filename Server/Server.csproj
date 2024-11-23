@@ -40,10 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Connection.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Classes\Logging.cs" />
     <Compile Include="Classes\Serializable\Message.cs" />
     <Compile Include="Classes\Serialization.cs" />
+    <Compile Include="Classes\Serializable\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
