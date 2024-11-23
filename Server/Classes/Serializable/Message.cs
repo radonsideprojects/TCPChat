@@ -8,7 +8,8 @@ namespace Server.Classes.Serializable
 {
     public class Message
     {
-        public string Content { get; set; }
+        public byte[] Data { get; set; }
         public string Username { get; set; }
+        public string Type { get; set; }
     }
 }

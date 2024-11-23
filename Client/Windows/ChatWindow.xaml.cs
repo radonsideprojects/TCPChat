@@ -28,18 +28,23 @@ namespace Client.Windows
                 DateTime timestamp = DateTime.Now;
                 Message message = Serialization.XmlDeserializeFromBytes<Message>(e.data);
 
-                if (message.Username == "system")
+                if (message.Type == "chatMessage")
                 {
-                    if (count > 0)
+                    if (message.Username == "system")
                     {
-                        chatBox.AppendText("\n" + message.Content + "\n\n");
+                        if (count > 0)
+                        {
+                            chatBox.AppendText(Encoding.UTF8.GetString(message.Data) + "\n");
+                        }
+                        count++;
                     }
-                    count++;
+                    else
+                    {
+                        chatBox.AppendText($"{timestamp.Hour}:{timestamp.Minute} " + $"[ {message.Username} ]" + ": " + Encoding.UTF8.GetString(message.Data) + "\n");
+                    }
                 }
-                else
-                {
-                    chatBox.AppendText($"{timestamp.Hour}:{timestamp.Minute} " + $"[ {message.Username} ]"  + ": " + message.Content + "\n");
-                }
+
+                
             });
         }
 
@@ -54,7 +59,8 @@ namespace Client.Windows
             if (e.Key == Key.Enter)
             {
                 message = new Message();
-                message.Content = inputBox.Text;
+                message.Data = Encoding.UTF8.GetBytes(inputBox.Text);
+                message.Type = "chatMessage";
                 message.Username = Username;
                 connection.sendToServer(Serialization.XmlSerializeToByte<Message>(message));
                 inputBox.Clear();
