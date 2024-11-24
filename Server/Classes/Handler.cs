@@ -64,6 +64,11 @@ namespace Server.Classes
                 switch (message.Type)
                 {
                     case "chatMessage":
+                        if (string.IsNullOrWhiteSpace(Encoding.UTF8.GetString(message.Data)))
+                        {
+                            Logging.Warning("Received an empty message from: " + e.sender.Client.RemoteEndPoint + $" ({message.Username}), " + "ignoring.");
+                            break;
+                        }
                         Logging.Info("Received a chat message from: " + e.sender.Client.RemoteEndPoint + $" ({message.Username})");
                         connection.broadcast(e.data);
                         break;
@@ -96,13 +101,10 @@ namespace Server.Classes
             }
             catch (Exception ex)
             {
-                Logging.Error("Improper data sent by client: " + e.sender.Client.RemoteEndPoint);
                 Logging.Error("Error: " + ex.Message);
-                Logging.Error("Data: " + BitConverter.ToString(e.data)); // Logs bytes as hexadecimal
-                                                                         // Or for text (if data should be UTF-8):
+                Logging.Error("Data: " + BitConverter.ToString(e.data));
                 Logging.Error("Data (as UTF-8): " + Encoding.UTF8.GetString(e.data));
             }
         }
-
     }
 }

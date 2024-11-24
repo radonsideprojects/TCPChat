@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using Client.Classes;
 using System;
 using System.Collections.Generic;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Client.Windows
 {
@@ -25,7 +27,7 @@ namespace Client.Windows
             connection = new Connection(_username);
             connection.onReceived += onMessageReceived;
 
-            chatBox.AppendText("Welcome to the chat!" + "\n");
+            AppendChatBox("Welcome to TCPChat", Brushes.Gray);
             connection.Receive();
         }
 
@@ -38,13 +40,16 @@ namespace Client.Windows
                 switch (message.Type)
                 {
                     case "chatMessage":
-                        chatBox.AppendText($"{timestamp.ToString("HH:mm:ss")} " + $"[ {message.Username} ]" + ": " + Encoding.UTF8.GetString(message.Data) + "\n");
+                        AppendChatBox($"{timestamp.ToString("HH:mm:ss")} " + $"[ {message.Username} ]" + ": " + Encoding.UTF8.GetString(message.Data), Brushes.Black);
+                        Notifications.PlayIncoming();
                         break;
                     case "userJoined":
-                        chatBox.AppendText("A user has joined: " + message.Username + "\n");
+                        AppendChatBox("A user has joined: " + message.Username, Brushes.Gray);
+                        Notifications.PlayJoin();
                         break;
                     case "userLeft":
-                        chatBox.AppendText("A user has left: " + message.Username + "\n");
+                        AppendChatBox("A user has left: " + message.Username, Brushes.Gray);
+                        Notifications.PlayLeft();
                         break;
                     case "userList":
                         UpdateUserList(message.Data);
@@ -89,6 +94,15 @@ namespace Client.Windows
                     userList.Items.Add(user.Username);
                 }
             });
+        }
+
+        public void AppendChatBox(string message, SolidColorBrush color)
+        {
+            Run run = new Run(message) { Foreground = color };
+            Paragraph paragraph = new Paragraph(run);
+            paragraph.Margin = new Thickness(0);
+            chatBox.Document.Blocks.Add(paragraph);
+            chatBox.ScrollToEnd();
         }
     }
 }
