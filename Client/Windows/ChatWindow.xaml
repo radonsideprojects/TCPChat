@@ -13,11 +13,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <emoji:TextBox x:Name="chatBox" 
+        <emoji:RichTextBox x:Name="chatBox" 
                  Grid.Row="0" 
                  Grid.Column="0"
-                 TextWrapping="Wrap" 
-                 VerticalScrollBarVisibility="Visible" 
+                 VerticalScrollBarVisibility="Auto" 
                  HorizontalScrollBarVisibility="Auto" 
                  IsReadOnly="True" 
                  TextChanged="chatBox_TextChanged"

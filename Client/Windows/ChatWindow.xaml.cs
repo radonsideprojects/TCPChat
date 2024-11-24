@@ -5,8 +5,6 @@ using System.Windows.Controls;
 using Client.Classes;
 using System;
 using System.Collections.Generic;
-using System.Windows.Markup;
-using System.Threading.Tasks;
 
 namespace Client.Windows
 {
@@ -40,7 +38,7 @@ namespace Client.Windows
                 switch (message.Type)
                 {
                     case "chatMessage":
-                        chatBox.AppendText($"{timestamp.Hour}:{timestamp.Minute} " + $"[ {message.Username} ]" + ": " + Encoding.UTF8.GetString(message.Data) + "\n");
+                        chatBox.AppendText($"{timestamp.ToString("HH:mm:ss")} " + $"[ {message.Username} ]" + ": " + Encoding.UTF8.GetString(message.Data) + "\n");
                         break;
                     case "userJoined":
                         chatBox.AppendText("A user has joined: " + message.Username + "\n");
