@@ -129,6 +129,17 @@ namespace Server.Classes
             }
         }
 
+        public void disconnectClient(TcpClient client)
+        {
+            var address = client.Client.RemoteEndPoint;
+            lock (clients)
+            {
+                clients.Remove(client);
+            }
+            client.Close();
+            Logging.Success("Kicked client: " + address);
+        }
+
         public void broadcast(byte[] data)
         {
             Task.Run(async () => {

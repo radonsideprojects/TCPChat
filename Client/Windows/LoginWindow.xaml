@@ -1,11 +1,11 @@
 ﻿<Window x:Class="Client.Windows.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Chat" Height="370" Width="525" WindowStartupLocation="CenterScreen">
+        Title="TCPChat" Height="370" Width="525" WindowStartupLocation="CenterScreen">
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Label Content="Chat" HorizontalAlignment="Center" FontSize="24" Margin="0,0,0,20"/>
+            <Label Content="TCPChat" HorizontalAlignment="Center" FontSize="24" Margin="0,0,0,20"/>
 
             <TextBox x:Name="userBox" Text="" TextChanged="userBox_TextChanged" MaxLength="15" TextAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="0,0,0,20"/>
             <TextBox x:Name="ipBox" Text="127.0.0.1"  MaxLength="15" TextAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="0,0,0,20"/>

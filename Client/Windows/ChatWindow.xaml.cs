@@ -41,7 +41,8 @@ namespace Client.Windows
                 {
                     case "chatMessage":
                         AppendChatBox($"{timestamp.ToString("HH:mm:ss")} " + $"[ {message.Username} ]" + ": " + Encoding.UTF8.GetString(message.Data), Brushes.Black);
-                        Notifications.PlayIncoming();
+                        if (message.Username != Username)
+                            Notifications.PlayIncoming();
                         break;
                     case "userJoined":
                         AppendChatBox("A user has joined: " + message.Username, Brushes.Gray);
@@ -53,6 +54,11 @@ namespace Client.Windows
                         break;
                     case "userList":
                         UpdateUserList(message.Data);
+                        break;
+                    case "userTaken":
+                        this.Hide();
+                        MessageBox.Show("The username has already been taken.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        this.Close();
                         break;
                 }
             });

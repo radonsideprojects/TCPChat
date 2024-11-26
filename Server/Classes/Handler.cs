@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Server.Classes.Serializable;
 
@@ -73,6 +74,20 @@ namespace Server.Classes
                         connection.broadcast(e.data);
                         break;
                     case "userJoined":
+
+                        Message takenMessage = new Message
+                        {
+                            Type = "userTaken",
+                            Username = message.Username
+                        };
+
+                        if (users.Any(u => u.Username == message.Username))
+                        {
+                            connection.sendToClient(e.sender, Serialization.XmlSerializeToByte(takenMessage));
+                            connection.disconnectClient(e.sender);
+                            break;
+                        }
+
                         user.Client = e.sender;
                         user.Username = message.Username;
 
@@ -102,8 +117,6 @@ namespace Server.Classes
             catch (Exception ex)
             {
                 Logging.Error("Error: " + ex.Message);
-                Logging.Error("Data: " + BitConverter.ToString(e.data));
-                Logging.Error("Data (as UTF-8): " + Encoding.UTF8.GetString(e.data));
             }
         }
     }
