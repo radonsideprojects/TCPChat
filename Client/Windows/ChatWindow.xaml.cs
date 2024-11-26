@@ -14,15 +14,13 @@ namespace Client.Windows
     {
         private Connection connection;
         private string Username;
-        private string IP;
-        public ChatWindow(string _username, string _ip)
+        public ChatWindow(string _username, string _serverName)
         {
             InitializeComponent();
 
             Username = _username;
-            IP = _ip;
 
-            this.Title = $"TCPChat ({_username}) | Server: {_ip}";
+            this.Title = $"TCPChat ({_username}) | Server: {_serverName}";
 
             connection = new Connection(_username);
             connection.onReceived += onMessageReceived;

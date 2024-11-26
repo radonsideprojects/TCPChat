@@ -2,13 +2,19 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="TCPChat" Height="370" Width="525" WindowStartupLocation="CenterScreen">
-
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Content="TCPChat" HorizontalAlignment="Center" FontSize="24" Margin="0,0,0,20"/>
 
+            <ComboBox x:Name="serverBox" ItemsSource="{Binding Servers}" DisplayMemberPath="Name" Width="200" Margin="0,0,0,20" HorizontalContentAlignment="Center">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+
             <TextBox x:Name="userBox" Text="" TextChanged="userBox_TextChanged" MaxLength="15" TextAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="0,0,0,20"/>
-            <TextBox x:Name="ipBox" Text="127.0.0.1"  MaxLength="15" TextAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="0,0,0,20"/>
 
             <Button Content="Connect" Click="Button_Click" HorizontalAlignment="Center" Width="100"/>
         </StackPanel>

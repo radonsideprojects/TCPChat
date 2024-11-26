@@ -55,6 +55,7 @@
     <Compile Include="Classes\Serializable\Message.cs" />
     <Compile Include="Classes\Serialization.cs" />
     <Compile Include="Classes\Serializable\User.cs" />
+    <Compile Include="Classes\Serializable\SettingsC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
